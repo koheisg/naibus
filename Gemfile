@@ -72,3 +72,5 @@ group :test do
 end
 
 gem "ruby-openai"
+
+gem "slack-ruby-client", "~> 2.0"
