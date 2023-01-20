@@ -1,9 +1,6 @@
 class SlackController < ActionController::API
   def endpoint
-    if params[:challenge]
-      render json: { challenge: params[:challenge] }, status: 200
-    else
-      head :ok
-    end
+    res = SlackService.call(params)
+    render json: res, status: 200
   end
 end

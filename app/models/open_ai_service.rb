@@ -1,13 +1,5 @@
-class TopController < ActionController::API
-  def show
-    output = call_openai(params[:input])
-
-    render json: { message: output }
-  end
-
-  private
-
-  def call_openai(input)
+class OpenAiService
+  def self.call(input)
     client = OpenAI::Client.new(access_token: ENV['OPENAI_API_ACCESS_TOKEN'])
     client.completions
 
@@ -20,6 +12,6 @@ class TopController < ActionController::API
         frequency_penalty: 0,
         presence_penalty: 0
       })
-    res["choices"].map { |c| c["text"] }
+    res["choices"].map { |c| c["text"] }.join('')
   end
 end
