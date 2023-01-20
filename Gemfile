@@ -74,3 +74,5 @@ end
 gem "ruby-openai"
 
 gem "slack-ruby-client", "~> 2.0"
+
+gem "tailwindcss-rails", "~> 2.0"
