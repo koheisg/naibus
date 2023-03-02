@@ -3,15 +3,11 @@ class OpenAiService
     client = OpenAI::Client.new(access_token: ENV['OPENAI_API_ACCESS_TOKEN'])
     client.completions
 
-    res = client.completions(
+    response = client.chat(
       parameters: {
         model: "gpt-3.5-turbo",
-        prompt: input,
-        max_tokens: 256,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0
+        messages: [{ role: "user", content: input}],
       })
-    res["choices"].map { |c| c["text"] }.join('')
+    response.dig("choices", 0, "message", "content")
   end
 end
