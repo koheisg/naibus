@@ -5,6 +5,22 @@ class SlackController < ActionController::API
   end
 
   def auth_callback
-    redirect_to root_path
+    client = Slack::Web::Client.new
+    res = client.oauth_v2_access(
+      client_id: ENV['SLACK_CLIENT_ID'],
+      client_secret: ENV['SLACK_CLIENT_SECRET'],
+      code: params[:code],
+      redirect_uri: ENV['SLACK_REDIRECT_URI']
+    )
+    if res['ok']
+      access_token = res['access_token']
+      workspace_id = res['team']['id']
+      workspace = Workspace.find_or_create_by(workspace_code: workspace_id)
+      workspace.update(access_token: access_token)
+      redirect_to root_path
+    else
+      flash[:error] = "Slackアプリのインストールに失敗しました。"
+      redirect_to root_path
+    end
   end
 end
