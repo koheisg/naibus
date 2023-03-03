@@ -1,5 +1,5 @@
 class SlackService
-  def self.call(params, )
+  def self.call(params)
     if params["event"]["type"] == 'url_verification'
       { challenge: params[:challenge] }
     elsif params["event"]["type"] == 'app_mention'
