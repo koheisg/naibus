@@ -12,11 +12,16 @@ class SlackController < ActionController::API
       code: params[:code],
       redirect_uri: ENV['SLACK_REDIRECT_URI']
     )
-    access_token = res['access_token']
-    workspace_id = res['team']['id']
-    workspace = Workspace.find_or_create_by(workspace_code: workspace_id)
-    workspace.update(access_token: access_token)
-    session[:workspace_id] = workspace.id
-    redirect_to root_path
+    if res['ok']
+      access_token = res['access_token']
+      workspace_id = res['team']['id']
+      workspace = Workspace.find_or_create_by(workspace_code: workspace_id)
+      workspace.update(access_token: access_token)
+      session[:workspace_id] = workspace.id
+      redirect_to workspace_path
+    else
+      flash[:error] = "Slackアプリのインストールに失敗しました。"
+      redirect_to root_path
+    end
   end
 end
