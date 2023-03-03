@@ -1,6 +1,6 @@
 class OpenAiService
-  def self.call(input)
-    client = OpenAI::Client.new(access_token: ENV['OPENAI_API_ACCESS_TOKEN'])
+  def self.call(input, open_ai_access_token)
+    client = OpenAI::Client.new(access_token: open_ai_access_token)
     client.completions
 
     response = client.chat(

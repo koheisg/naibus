@@ -1,5 +1,7 @@
-<a href="https://slack.com/app_redirect?app=<%= ENV['SLACK_APP_ID'] %>&amp;team=<%= current_workspace.workspace_code %>&amp;tab=home">
-  <button type="button" class="inline-flex justify-center px-4 py-2 font-semibold text-white border border-transparent leading-5 rounded-md bg-slack-green hover:bg-green-800 focus:outline-none focus:border-green-900 focus:ring-blue active:bg-green-900 transition duration-150 ease-in-out">
-    Continue in Slack
-  </button>
-</a>
+<div class='flex items-center justify-center h-full'>
+  <a href="https://slack.com/app_redirect?app=<%= ENV['SLACK_APP_ID'] %>&amp;team=<%= current_workspace.workspace_code %>&amp;tab=home">
+    <button type="button" class="inline-flex justify-center px-4 py-2 font-semibold text-white border border-transparent leading-5 rounded-md bg-[#007a5a] hover:bg-green-800 focus:outline-none focus:border-green-900 focus:ring-blue active:bg-green-900 transition duration-150 ease-in-out">
+      Continue in Slack
+    </button>
+  </a>
+</div>

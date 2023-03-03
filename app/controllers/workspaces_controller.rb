@@ -1,12 +1,23 @@
 class WorkspacesController < ApplicationController
-  before_action :current_workspace
+  #before_action :require_connected_workspace
 
-  def show
-    redirect_to root_path unless current_workspace
+  def edit
   end
 
-  helper_method :current_workspace
-  def current_workspace
-    @current_workspace ||= Workspace.find_by(id: session[:workspace_id])
+  def show
+  end
+
+  def update
+    if current_workspace.update(workspace_params)
+      redirect_to workspace_path
+    else
+      render :show
+    end
+  end
+
+  private
+
+  def workspace_params
+    params.require(:workspace).permit(:open_ai_access_token)
   end
 end

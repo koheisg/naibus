@@ -18,7 +18,7 @@ class SlackController < ActionController::API
       workspace = Workspace.find_or_create_by(workspace_code: workspace_id)
       workspace.update(access_token: access_token)
       session[:workspace_id] = workspace.id
-      redirect_to workspace_path
+      redirect_to edit_workspace_path
     else
       flash[:error] = "Slackアプリのインストールに失敗しました。"
       redirect_to root_path
