@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_03_160711) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_09_015241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chat_threads", force: :cascade do |t|
+    t.string "message_code"
+    t.string "ts_code"
+    t.text "message"
+    t.integer "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_code", "role"], name: "index_chat_threads_on_message_code_and_role", unique: true
+  end
 
   create_table "workspaces", force: :cascade do |t|
     t.string "workspace_code"
