@@ -1,7 +1,27 @@
 class SlackController < ActionController::API
   def endpoint
-    res = SlackService.call(params)
-    render json: res, status: 200
+    if params["event"]["type"] == 'url_verification'
+      render json: { challenge: params[:challenge] }, status: 200
+    elsif params["event"]["type"] == 'app_mention'
+      workspace = Workspace.find_by!(workspace_code: thread.team_id)
+      thread = ChatThread.new(message_code: params[:event][:client_msg_id],
+                              role: :user,
+                              team_id: params[:team_id],
+                              channel: params.dig("event","channel"),
+                              ts_code: params["event"]["thread_ts"] || params["event"]["ts"],
+                              message: params["event"]["text"].gsub(/<@.*> /, ''))
+      if thread.save
+        # AppMentionRecieveJob.perform_later(thread)
+        SlackAppMentionJob.perform_later(workspace, thread)
+        render json: '', status: 200
+      else
+        # error response
+        # SlackErrorResponseJob.perform_later(workspace, thread)
+        render json: '', status: 200
+      end
+    else
+      render json: '', status: 200
+    end
   end
 
   def auth_callback
