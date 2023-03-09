@@ -10,7 +10,7 @@ class SlackService
           text = OpenAiService.call(text, workspace.open_ai_access_token)
           Slack::Web::Client.new.chat_postMessage(text: text,
                                                   thread_ts: params["event"]["ts"],
-                                                  channel: '#general',
+                                                  channel: params["event"]["channel"],
                                                   as_user: true)
         end
       end
