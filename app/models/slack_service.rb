@@ -7,6 +7,9 @@ class SlackService
       workspace = Workspace.find_by(workspace_code: params[:team_id])
       Thread.new do
         Rails.cache.fetch("slack_message_#{params[:event][:client_msg_id]}", expires_in: 1.minute) do
+          Slack.configure do |config|
+            config.token = workspace.access_token
+          end
           text = OpenAiService.call(text, workspace.open_ai_access_token)
           Slack::Web::Client.new.chat_postMessage(text: text,
                                                   thread_ts: params["event"]["ts"],
