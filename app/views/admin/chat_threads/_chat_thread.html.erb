@@ -1,0 +1,37 @@
+<div id="<%= dom_id chat_thread %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Message code:</strong>
+    <%= chat_thread.message_code %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Ts code:</strong>
+    <%= chat_thread.ts_code %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Message:</strong>
+    <%= chat_thread.message %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Role:</strong>
+    <%= chat_thread.role %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Team code:</strong>
+    <%= chat_thread.team_code %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Channel code:</strong>
+    <%= chat_thread.channel_code %>
+  </p>
+
+  <% if action_name != "show" %>
+    <%= link_to "Show this chat thread", chat_thread, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Edit this chat thread', edit_chat_thread_path(chat_thread), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <hr class="mt-6">
+  <% end %>
+</div>
