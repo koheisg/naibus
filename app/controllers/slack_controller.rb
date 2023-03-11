@@ -4,12 +4,19 @@ class SlackController < ActionController::API
       render json: { challenge: params[:challenge] }, status: 200
     elsif params["event"]["type"] == 'app_mention'
       workspace = Workspace.find_by!(workspace_code: params[:team_id])
+      message = params["event"]["text"].gsub(/<@.*> /, '')
+      if message.start_with?('system')
+        message = message.gsub(/\Asystem/, '')
+        role = :system
+      else
+        role = :user
+      end
       thread = ChatThread.new(message_code: params[:event][:client_msg_id],
-                              role: :user,
+                              role: role,
                               team_code: params[:team_id],
                               channel_code: params.dig("event","channel"),
                               ts_code: params["event"]["thread_ts"] || params["event"]["ts"],
-                              message: params["event"]["text"].gsub(/<@.*> /, ''))
+                              message: message)
       if thread.save
         SlackAppMentionJob.perform_later(workspace, thread)
       end
