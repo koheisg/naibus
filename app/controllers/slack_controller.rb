@@ -27,6 +27,11 @@ class SlackController < ActionController::API
   end
 
   def auth_callback
+    if params[:error]
+      flash[:error] = "Slackアプリのインストールに失敗しました。[#{params[:error]}]"
+      return redirect_to root_path
+    end
+
     client = Slack::Web::Client.new
     res = client.oauth_v2_access(
       client_id: ENV['SLACK_CLIENT_ID'],
