@@ -3,7 +3,7 @@ class Admin::ChatThreadsController < Admin::ApplicationController
 
   # GET /admin/chat_threads or /admin/chat_threads.json
   def index
-    @chat_threads = ChatThread.all
+    @chat_threads = ChatThread.order(id: :desc)
   end
 
   # GET /admin/chat_threads/1 or /admin/chat_threads/1.json
