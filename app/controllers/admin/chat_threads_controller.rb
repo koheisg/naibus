@@ -1,4 +1,4 @@
-class Admin::ChatThreadsController < ApplicationController
+class Admin::ChatThreadsController < Admin::ApplicationController
   before_action :set_chat_thread, only: %i[ show edit update destroy ]
 
   # GET /admin/chat_threads or /admin/chat_threads.json
