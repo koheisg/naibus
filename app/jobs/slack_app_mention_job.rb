@@ -7,7 +7,7 @@ class SlackAppMentionJob < ApplicationJob
     end
 
     messages = ChatThread.where(ts_code: thread.ts_code).map do |chat_thread|
-      { role: chat_thread.role.to_s, content: chat_thread.message }
+      { role: chat_thread.role.to_s, content: chat_thread.message_with_ref_urls }
     end
     assistant_message = OpenAiService.call(messages, workspace.open_ai_access_token)
 
