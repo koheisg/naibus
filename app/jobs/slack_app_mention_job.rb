@@ -22,15 +22,6 @@ class SlackAppMentionJob < ApplicationJob
                                           message: assistant_message)
 
       SlackResponseJob.perform_later(workspace, response_thread)
-    else
-      response_thread = ChatThread.create(message_code: thread.message_code,
-                                          role: :assistant,
-                                          team_code: thread.team_code,
-                                          channel_code: thread.channel_code,
-                                          ts_code: thread.ts_code,
-                                          message: '別スレッドで聞いて')
-
-      SlackResponseJob.perform_later(workspace, response_thread)
     end
   end
 end
