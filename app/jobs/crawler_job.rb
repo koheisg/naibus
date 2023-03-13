@@ -6,8 +6,11 @@ class CrawlerJob < ApplicationJob
     if response.is_a?(Net::HTTPSuccess)
       html = response.body
       doc = Nokogiri::HTML.parse(html, nil, 'utf-8')
-      title = doc.xpath('//title')
-      body = doc.xpath('//body').text.gsub(/<[^>]*>/, '')
+      doc.css('script, style').each(&:remove)
+      title = doc.xpath('//title').text
+      body = doc.xpath('//body').text
+        .gsub(/<[^>]*>/, '')
+        .gsub(/\s/, '')
       ref.update(body: body, title: title)
     end
   end
