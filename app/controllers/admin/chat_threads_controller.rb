@@ -3,7 +3,9 @@ class Admin::ChatThreadsController < Admin::ApplicationController
 
   # GET /admin/chat_threads or /admin/chat_threads.json
   def index
-    @chat_threads = ChatThread.order(id: :desc)
+    set_page_and_extract_portion_from(
+      ChatThread.order(id: :desc)
+    )
   end
 
   # GET /admin/chat_threads/1 or /admin/chat_threads/1.json
