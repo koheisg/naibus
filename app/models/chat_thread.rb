@@ -7,17 +7,16 @@ class ChatThread < ApplicationRecord
     if ref_urls.any?
       ref_messages = ref_urls.map do |ref_url|
         <<~EOS
-      ----
-      #{ref_url.title} には以下の記載があります
-      title: #{ref_url.title}
-      body: #{ref_url.body}
+          ----
+          #{ref_url.title} には以下の記載があります
+          body: #{ref_url.body.gsub(/\s/, '')[..1000]}
         EOS
       end
 
       <<~EOS
-    #{message}
+        #{message}
 
-    #{ref_messages.join('\n')}
+        #{ref_messages.join('\n')}
       EOS
     else
       message
