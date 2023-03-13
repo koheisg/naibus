@@ -6,10 +6,10 @@
 
     <%= render @chat_thread %>
 
-    <%= link_to 'Edit this chat_thread', edit_admin_chat_thread_path(@chat_thread), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Edit this chat_thread', edit_admin_chat_thread_path(@chat_thread), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium", data: { turbo: false } %>
     <div class="inline-block ml-2">
-      <%= button_to 'Destroy this chat_thread', admin_chat_thread_path(@chat_thread), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+      <%= button_to 'Destroy this chat_thread', admin_chat_thread_path(@chat_thread), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium", data: { turbo: false } %>
     </div>
-    <%= link_to 'Back to chat_threads', admin_chat_threads_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Back to chat_threads', admin_chat_threads_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium", data: { turbo: false } %>
   </div>
 </div>

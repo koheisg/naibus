@@ -9,6 +9,17 @@
   </div>
 
   <div id="chat_threads" class="min-w-full">
-    <%= render @page.records %>
+    <%= turbo_frame_tag "items" do %>
+      <%= render @page.records %>
+    <% end %>
+  </div>
+  <div class="flex justify-center py-10">
+    <%= turbo_frame_tag "paginate_link" do %>
+      <% if @page.last? %>
+        No more pages!
+      <% else %>
+        <%= link_to "Load more", admin_chat_threads_path(page: @page.next_param), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500", data: {'turbo-stream': true} %>
+      <% end %>
+    <% end %>
   </div>
 </div>
