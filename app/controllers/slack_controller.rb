@@ -9,7 +9,7 @@ class SlackController < ActionController::API
                               team_code: params[:team_id],
                               channel_code: params.dig("event","channel"),
                               ts_code: params["event"]["thread_ts"] || params["event"]["ts"],
-                              message: params["event"]["text"].gsub(/<@.*> /, ''))
+                              message: params["event"]["text"].gsub(/<@.*?> /, ''))
       if thread.save
         SlackAppMentionJob.perform_later(workspace, thread)
       end
