@@ -60,4 +60,9 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:each, type: :job) do
+    ActiveJob::Base.queue_adapter = :test
+  end
 end

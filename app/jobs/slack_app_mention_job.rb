@@ -1,6 +1,14 @@
 class SlackAppMentionJob < ApplicationJob
   def perform(workspace, thread)
-    messages = ChatThread.where(ts_code: thread.ts_code).map { |chat_thread| { role: chat_thread.role.to_s, content: chat_thread.message } }
+    urls = URI.extract(thread.message, ["http","https"])
+    urls.each do |url|
+      ref = thread.ref_urls.create(url: url)
+      CrawlerJob.perform_now(ref)
+    end
+
+    messages = ChatThread.where(ts_code: thread.ts_code).map do |chat_thread|
+      { role: chat_thread.role.to_s, content: chat_thread.message }
+    end
     assistant_message = OpenAiService.call(messages, workspace.open_ai_access_token)
 
     response_thread = ChatThread.create(message_code: thread.message_code,
