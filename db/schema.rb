@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_10_142340) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_13_015138) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_10_142340) do
     t.index ["message_code", "role"], name: "index_chat_threads_on_message_code_and_role", unique: true
   end
 
+  create_table "ref_urls", force: :cascade do |t|
+    t.bigint "chat_thread_id", null: false
+    t.string "url"
+    t.text "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_thread_id"], name: "index_ref_urls_on_chat_thread_id"
+  end
+
   create_table "workspaces", force: :cascade do |t|
     t.string "workspace_code"
     t.string "access_token"
@@ -35,4 +45,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_10_142340) do
     t.index ["workspace_code"], name: "index_workspaces_on_workspace_code"
   end
 
+  add_foreign_key "ref_urls", "chat_threads"
 end
