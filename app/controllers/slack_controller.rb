@@ -20,10 +20,6 @@ class SlackController < ActionController::API
   end
 
   def auth_callback
-    if current_workspace
-      return redirect_to edit_workspace_path
-    end
-
     if params[:error]
       flash[:error] = "Slackアプリのインストールに失敗しました。[#{params[:error]}]"
       return redirect_to root_path
