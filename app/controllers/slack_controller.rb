@@ -20,6 +20,10 @@ class SlackController < ActionController::API
   end
 
   def auth_callback
+    if current_workspace
+      return redirect_to edit_workspace_path
+    end
+
     if params[:error]
       flash[:error] = "Slackアプリのインストールに失敗しました。[#{params[:error]}]"
       return redirect_to root_path
@@ -35,10 +39,9 @@ class SlackController < ActionController::API
     if res['ok']
       access_token = res['access_token']
       workspace_id = res['team']['id']
-      workspace = Workspace.find_or_create_by(workspace_code: workspace_id) do |w|
-        w.access_token = access_token
-      end
-      session[:workspace_id] = workspace.id
+      Workspace.upsert({workspace_code: workspace_id,
+                        access_token: access_token})
+      session[:workspace_id] = Workspace.find_by!(workspace_code: workspace_id).id
       redirect_to edit_workspace_path
     else
       flash[:error] = "Slackアプリのインストールに失敗しました。"
