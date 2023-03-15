@@ -36,7 +36,7 @@ class SlackController < ActionController::API
       access_token = res['access_token']
       workspace_id = res['team']['id']
       Workspace.upsert({workspace_code: workspace_id,
-                        access_token: access_token})
+                        access_token: access_token}, unique_by: workspace_id))
       session[:workspace_id] = Workspace.find_by!(workspace_code: workspace_id).id
       redirect_to edit_workspace_path
     else
