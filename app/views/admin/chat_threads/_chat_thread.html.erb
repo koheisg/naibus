@@ -32,12 +32,12 @@
   <% if action_name != "show" %>
     <%= link_to "Show this chat thread", [:admin, chat_thread], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium", data: { turbo: false } %>
     <%= link_to 'Edit this chat thread', edit_admin_chat_thread_path(chat_thread), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium", data: { turbo: false } %>
-    <% if chat_thread.user? %>
-      <%= button_to 'Enqueue Mention Job', admin_chat_thread_mention_jobs_path(chat_thread), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium", method: :post, data: { turbo: false } %>
-    <% end %>
-    <% if chat_thread.assistant? %>
-      <%= button_to 'Enqueue Response Job', admin_chat_thread_response_jobs_path(chat_thread), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium", method: :post, data: { turbo: false } %>
-    <% end %>
-    <hr class="mt-6">
   <% end %>
+  <% if chat_thread.user? %>
+    <%= button_to 'Enqueue Mention Job', admin_chat_thread_mention_jobs_path(chat_thread), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium", method: :post, data: { turbo: false } %>
+  <% end %>
+  <% if chat_thread.assistant? %>
+    <%= button_to 'Enqueue Response Job', admin_chat_thread_response_jobs_path(chat_thread), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium", method: :post, data: { turbo: false } %>
+  <% end %>
+    <hr class="mt-6">
 </div>
