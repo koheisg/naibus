@@ -3,7 +3,7 @@ class SlackAppMentionJob < ApplicationJob
     urls = URI.extract(thread.message, ["http","https"])
     if urls.present?
       urls.each do |url|
-        ref = thread.ref_urls.create(url: url)
+        ref = thread.ref_urls.find_or_create_by(url: url)
         CrawlerJob.perform_now(ref)
       end
     end
