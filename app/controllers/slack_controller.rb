@@ -35,9 +35,14 @@ class SlackController < ActionController::API
     if res['ok']
       access_token = res['access_token']
       workspace_id = res['team']['id']
-      Workspace.upsert({workspace_code: workspace_id,
-                        access_token: access_token}, unique_by: workspace_id)
-      session[:workspace_id] = Workspace.find_by!(workspace_code: workspace_id).id
+      workspace = Workspace.find_by(workspace_code: workspace_id)
+      if workspace
+        workspace.update!(access_token:)
+      else
+        workspace = Workspace.create!(workspace_code: workspace_id,
+                                      access_token:)
+      end
+      session[:workspace_id] = workspace.id
       redirect_to edit_workspace_path
     else
       flash[:error] = "Slackアプリのインストールに失敗しました。"
