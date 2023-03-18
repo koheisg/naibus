@@ -8,7 +8,7 @@ class SlackAppMentionJob < ApplicationJob
       end
     end
 
-    messages = ChatThread.where(ts_code: thread.ts_code).map do |chat_thread|
+    messages = ChatThread.where(ts_code: thread.ts_code).order(:created_at).map do |chat_thread|
       { role: chat_thread.role.to_s, content: chat_thread.message_with_ref_urls }
     end
 
