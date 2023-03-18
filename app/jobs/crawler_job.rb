@@ -1,5 +1,7 @@
 class CrawlerJob < ApplicationJob
   def perform(ref)
+    return if ref.body.present?
+
     uri = URI.parse(ref.url)
     response = Net::HTTP.get_response(uri)
 

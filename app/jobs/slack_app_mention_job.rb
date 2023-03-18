@@ -12,7 +12,7 @@ class SlackAppMentionJob < ApplicationJob
       { role: chat_thread.role.to_s, content: chat_thread.message_with_ref_urls }
     end
 
-    assistant_message = OpenAiService.call(messages, workspace.open_ai_access_token)
+    assistant_message = OpenAiService.chat_completions(messages, workspace.open_ai_access_token)
     if assistant_message
       response_thread = ChatThread.create(message_code: thread.message_code,
                                           role: :assistant,
