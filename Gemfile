@@ -31,3 +31,5 @@ group :development do
   gem 'guard-rspec'
 end
 
+
+gem "sidekiq", "~> 7.0"
