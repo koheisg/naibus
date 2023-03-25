@@ -14,17 +14,11 @@ class SlackController < ActionController::API
         SlackAppMentionJob.perform_later(workspace, thread)
       end
       render json: '', status: 200
-    elsif params["event"]["type"] == 'add_reaction'
+    elsif params["event"]["type"] == 'reaction_added' && params["event"]["reaction"] == 'naibus'
       workspace = Workspace.find_by!(workspace_code: params[:team_id])
-      thread = ChatThread.new(message_code: params[:event][:client_msg_id],
-                              role: :user,
-                              team_code: params[:team_id],
-                              channel_code: params.dig("event","channel"),
-                              ts_code: params["event"]["thread_ts"] || params["event"]["ts"],
-                              message: params["event"]["text"].gsub(/<@.*?> /, ''))
-      if thread.save
-        SlackAppMentionJob.perform_later(workspace, thread)
-      end
+      SlackRetriveConversationJob.perform_now(workspace,
+                                              params['event']['item']['channel'],
+                                              params['event']['item']['ts'])
       render json: '', status: 200
     else
       render json: '', status: 200
