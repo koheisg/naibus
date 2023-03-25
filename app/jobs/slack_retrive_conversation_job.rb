@@ -13,7 +13,7 @@ class SlackRetriveConversationJob < ApplicationJob
 
     message_item = item['messages'][0]
 
-    thread = ChatThread.find_by(team_code: workspace.workspace_code, ts: ts)
+    thread = ChatThread.find_by(team_code: workspace.workspace_code, ts_code: ts)
 
     if thread.blank?
       thread = ChatThread.new(message_code: message_item[:client_msg_id],
