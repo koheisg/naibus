@@ -27,8 +27,8 @@ class CrawlerJob < ApplicationJob
       'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
     )
     browser.go_to(uri)
+    browser.network.wait_for_idle
     html = browser.body
-    sleep 3
     browser.quit
     html
   end
