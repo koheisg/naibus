@@ -33,3 +33,5 @@ end
 
 
 gem "sidekiq", "~> 7.0"
+
+gem "ferrum", "~> 0.13"
