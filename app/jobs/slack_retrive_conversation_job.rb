@@ -5,7 +5,7 @@ class SlackRetriveConversationJob < ApplicationJob
     end
 
     item = Slack::Web::Client.new.conversations_history(channel: channel_code,
-                                                        ts: ts,
+                                                        latest: ts,
                                                         inclusive: true,
                                                         limit: 1)
 
