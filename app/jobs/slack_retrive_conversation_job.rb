@@ -12,14 +12,18 @@ class SlackRetriveConversationJob < ApplicationJob
 
     message_item = item['messages'][0]
 
-    thread = ChatThread.new(message_code: message_item[:client_msg_id],
-                            role: :user,
-                            team_code: workspace.workspace_code,
-                            channel_code: channel_code,
-                            ts_code: ts,
-                            message: message_item["text"].gsub(/<@.*?> /, ''))
+    thread = ChatTread.find_by(workspace_id: workspace.id, ts: ts)
 
-    return unless thread.save
+    if thread.blank?
+      thread = ChatThread.new(message_code: message_item[:client_msg_id],
+                              role: :user,
+                              team_code: workspace.workspace_code,
+                              channel_code: channel_code,
+                              ts_code: ts,
+                              message: message_item["text"].gsub(/<@.*?> /, ''))
+      thread.save
+    end
+
 
     SlackAppMentionJob.perform_later(workspace, thread)
   end
