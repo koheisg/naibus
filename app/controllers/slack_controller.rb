@@ -15,7 +15,7 @@ class SlackController < ActionController::API
       end
       render json: '', status: 200
     elsif params["event"]["type"] == 'reaction_added' && params["event"]["reaction"] == 'naibus'
-      workspace = Workspace.find_by!(workspace_code: params[:team_id])
+      workspace = Workspace.find_by!(workspace_code: params['authorizations'][0]['team_id'])
       SlackRetriveConversationJob.perform_now(workspace,
                                               params['event']['item']['channel'],
                                               params['event']['item']['ts'])
