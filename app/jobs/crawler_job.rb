@@ -28,7 +28,7 @@ class CrawlerJob < ApplicationJob
     )
     browser.go_to(uri)
     browser.network.wait_for_idle
-    browser.body.wait_for_stop_moving
+    sleep 10
     html = browser.body
     browser.quit
     html
