@@ -6,6 +6,7 @@ class SlackRetriveConversationJob < ApplicationJob
 
     item = Slack::Web::Client.new.conversations_history(channel: channel_code,
                                                         ts: ts,
+                                                        inclusive: true,
                                                         limit: 1)
 
     return if !item['ok']
