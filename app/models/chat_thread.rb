@@ -14,12 +14,12 @@ class ChatThread < ApplicationRecord
       end
 
       <<~EOS
-        #{message}
+        #{message} (現在時刻:#{created_at})
 
         #{ref_messages.join('\n')}
       EOS
     else
-      message
+      "#{message} (現在時刻:#{created_at})"
     end
   end
 end
