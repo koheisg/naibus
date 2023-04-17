@@ -9,7 +9,10 @@ class SlackAppMentionJob < ApplicationJob
         CrawlerJob.perform_now(ref)
       end
     end
-    system_message = "あなたはSlackにインストールされてるチャットボットして振る舞ってください。現在時刻は#{Time.current.strftime('%Y年%m月%d日 %H時%M分%S秒')}です。"
+    system_message = <<~SYSTEM_MESSAGES
+      あなたはSlackにインストールされてるチャットボットして振る舞ってください。
+      現在時刻は#{Time.current.in_time_zone('Tokyo').strftime('%Y年%m月%d日 %H時%M分%S秒')}です。
+    SYSTEM_MESSAGES
     messages = [
       { role: :system, content: system_message }
     ]
