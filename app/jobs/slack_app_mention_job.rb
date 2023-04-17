@@ -10,10 +10,13 @@ class SlackAppMentionJob < ApplicationJob
     system_message = "あなたはSlackにインストールされてるチャットボットして振る舞ってください。現在時刻は#{Time.current.strftime('%Y年%m月%d日 %H時%M分%S秒')}です。"
     messages = [
       { role: :system, content: system_message }
-    ] + ChatThread.where(ts_code: thread.ts_code)
-                  .order(:created_at)
-                  .map { { role: _1.role.to_s, content: _1.message_with_ref_urls } }
-    end
+    ]
+
+    thread_messages = ChatThread.where(ts_code: thread.ts_code)
+      .order(:created_at)
+      .map { { role: _1.role.to_s, content: _1.message_with_ref_urls } }
+
+    messages += thread_messages
 
     assistant_message = OpenAiService.call(messages, workspace.open_ai_access_token)
     if assistant_message
