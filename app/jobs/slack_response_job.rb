@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SlackResponseJob < ApplicationJob
   def perform(workspace, response_thread)
     Slack.configure do |config|

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'sidekiq/web'
 
 Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-  username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]
+  username == ENV['BASIC_AUTH_USER'] && password == ENV['BASIC_AUTH_PASSWORD']
 end
 
 Rails.application.routes.draw do
@@ -12,8 +14,8 @@ Rails.application.routes.draw do
       resources :response_jobs, module: :chat_threads, only: [:create]
     end
   end
-  root "top#show"
-  get "slack/auth/callback", to: "slack#auth_callback"
+  root 'top#show'
+  get 'slack/auth/callback', to: 'slack#auth_callback'
   post 'slack/endpoint', to: 'slack#endpoint'
-  resource :workspace, only: [:show, :edit, :update]
+  resource :workspace, only: %i[show edit update]
 end

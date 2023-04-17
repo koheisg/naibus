@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class SlackAppMentionJob < ApplicationJob
   def perform(workspace, thread)
-    urls = URI.extract(thread.message, ["http","https"])
+    urls = URI.extract(thread.message, %w[http https])
     if urls.present?
       urls.each do |url|
-        ref = thread.ref_urls.find_or_create_by(url: url)
+        ref = thread.ref_urls.find_or_create_by(url:)
         CrawlerJob.perform_now(ref)
       end
     end
@@ -13,21 +15,21 @@ class SlackAppMentionJob < ApplicationJob
     ]
 
     thread_messages = ChatThread.where(ts_code: thread.ts_code)
-      .order(:created_at)
-      .map { { role: _1.role.to_s, content: _1.message_with_ref_urls } }
+                                .order(:created_at)
+                                .map { { role: _1.role.to_s, content: _1.message_with_ref_urls } }
 
     messages += thread_messages
 
     assistant_message = OpenAiService.call(messages, workspace.open_ai_access_token)
-    if assistant_message
-      response_thread = ChatThread.create(message_code: thread.message_code,
-                                          role: :assistant,
-                                          team_code: thread.team_code,
-                                          channel_code: thread.channel_code,
-                                          ts_code: thread.ts_code,
-                                          message: assistant_message)
+    return unless assistant_message
 
-      SlackResponseJob.perform_later(workspace, response_thread)
-    end
+    response_thread = ChatThread.create(message_code: thread.message_code,
+                                        role: :assistant,
+                                        team_code: thread.team_code,
+                                        channel_code: thread.channel_code,
+                                        ts_code: thread.ts_code,
+                                        message: assistant_message)
+
+    SlackResponseJob.perform_later(workspace, response_thread)
   end
 end

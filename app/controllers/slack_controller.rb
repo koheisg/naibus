@@ -1,20 +1,20 @@
+# frozen_string_literal: true
+
 class SlackController < ActionController::API
   def endpoint
-    if params["event"]["type"] == 'url_verification'
+    if params['event']['type'] == 'url_verification'
       render json: { challenge: params[:challenge] }, status: 200
-    elsif params["event"]["type"] == 'app_mention'
+    elsif params['event']['type'] == 'app_mention'
       workspace = Workspace.find_by!(workspace_code: params[:team_id])
       thread = ChatThread.new(message_code: params[:event][:client_msg_id],
                               role: :user,
                               team_code: params[:team_id],
-                              channel_code: params.dig("event","channel"),
-                              ts_code: params["event"]["thread_ts"] || params["event"]["ts"],
-                              message: params["event"]["text"].gsub(/<@.*?> /, ''))
-      if thread.save
-        SlackAppMentionJob.perform_later(workspace, thread)
-      end
+                              channel_code: params.dig('event', 'channel'),
+                              ts_code: params['event']['thread_ts'] || params['event']['ts'],
+                              message: params['event']['text'].gsub(/<@.*?> /, ''))
+      SlackAppMentionJob.perform_later(workspace, thread) if thread.save
       render json: '', status: 200
-    elsif params["event"]["type"] == 'reaction_added' && params["event"]["reaction"] == 'naibus'
+    elsif params['event']['type'] == 'reaction_added' && params['event']['reaction'] == 'naibus'
       workspace = Workspace.find_by!(workspace_code: params['authorizations'][0]['team_id'])
       SlackRetriveConversationJob.perform_later(workspace,
                                                 params['event']['item']['channel'],
@@ -51,7 +51,7 @@ class SlackController < ActionController::API
       session[:workspace_id] = workspace.id
       redirect_to edit_workspace_path
     else
-      flash[:error] = "Slackアプリのインストールに失敗しました。"
+      flash[:error] = 'Slackアプリのインストールに失敗しました。'
       redirect_to root_path
     end
   end

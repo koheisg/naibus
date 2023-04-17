@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChatThread < ApplicationRecord
   has_many :ref_urls
 

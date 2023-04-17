@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   def current_workspace
     @current_workspace ||= Workspace.find_by(id: session[:workspace_id])

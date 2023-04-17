@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CrawlerJob, type: :job do
@@ -10,13 +12,13 @@ RSpec.describe CrawlerJob, type: :job do
       specify do
         expect(Net::HTTP).to receive(:get_response).and_return(
           instance_double(Net::HTTPSuccess, is_a?: true, body: <<~HTML)
-          <html>
-          <head><title>Example</title></head>
-          <body>
-          <script>console.log('a')</script>
-          <div><h1>Example</h1></div>
-          </body>
-          </html>
+            <html>
+            <head><title>Example</title></head>
+            <body>
+            <script>console.log('a')</script>
+            <div><h1>Example</h1></div>
+            </body>
+            </html>
           HTML
         )
 

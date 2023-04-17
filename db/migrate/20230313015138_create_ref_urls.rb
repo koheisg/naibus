@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRefUrls < ActiveRecord::Migration[7.0]
   def change
     create_table :ref_urls do |t|

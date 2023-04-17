@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 class WorkspacesController < ApplicationController
-  #before_action :require_connected_workspace
+  # before_action :require_connected_workspace
 
-  def edit
-  end
+  def edit; end
 
-  def show
-  end
+  def show; end
 
   def update
     if current_workspace.update(workspace_params)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CrawlerJob < ApplicationJob
   def perform(ref)
     uri = URI.parse(ref.url)

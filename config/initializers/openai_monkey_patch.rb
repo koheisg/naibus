@@ -1,14 +1,14 @@
-unless OpenAI::VERSION == "3.4.0"
-  raise "Consider removing this patch"
-end
+# frozen_string_literal: true
+
+raise 'Consider removing this patch' unless OpenAI::VERSION == '3.4.0'
 
 module NaibusHTTParty
   def json_post(path:, parameters:)
     HTTParty.post(
-      uri(path: path),
-      headers: headers,
+      uri(path:),
+      headers:,
       body: parameters&.to_json,
-      timeout: 100000
+      timeout: 100_000
     )
   end
 end

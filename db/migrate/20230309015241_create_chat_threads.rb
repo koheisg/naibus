@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateChatThreads < ActiveRecord::Migration[7.0]
   def change
     create_table :chat_threads do |t|
@@ -8,6 +10,6 @@ class CreateChatThreads < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    add_index :chat_threads, [:message_code, :role], unique: true
+    add_index :chat_threads, %i[message_code role], unique: true
   end
 end

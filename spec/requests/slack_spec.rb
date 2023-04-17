@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Slack' do
@@ -12,9 +14,9 @@ RSpec.describe 'Slack' do
 
     context 'when params["event"]["type"] == "app_mention"' do
       it 'returns 404' do
-        expect {
+        expect do
           post '/slack/endpoint', params: { event: { type: 'app_mention', team_id: 'xxxxx' } }
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        end.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -24,10 +26,10 @@ RSpec.describe 'Slack' do
       end
 
       it 'returns 200' do
-        expect {
+        expect do
           post '/slack/endpoint', params: { event: { type: 'app_mention', text: '@naibus foo bar' }, team_id: 'xxxxx' }
-        }.to change(ChatThread, :count).by(1)
-          .and have_enqueued_job(SlackAppMentionJob)
+        end.to change(ChatThread, :count).by(1)
+                                         .and have_enqueued_job(SlackAppMentionJob)
         expect(response).to have_http_status(200)
         expect(response.body).to eq('')
       end
@@ -39,10 +41,10 @@ RSpec.describe 'Slack' do
       end
 
       it 'returns 200' do
-        expect {
+        expect do
           post '/slack/endpoint', params: { event: { type: 'app_mention', text: '@naibus foo bar http://example.com' }, team_id: 'xxxxx' }
-        }.to change(ChatThread, :count).by(1)
-          .and have_enqueued_job(SlackAppMentionWithUrlJob)
+        end.to change(ChatThread, :count).by(1)
+                                         .and have_enqueued_job(SlackAppMentionWithUrlJob)
         expect(response).to have_http_status(200)
         expect(response.body).to eq('')
       end

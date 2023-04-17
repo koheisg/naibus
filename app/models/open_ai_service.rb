@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OpenAiService
   def self.call(messages, open_ai_access_token)
     client = OpenAI::Client.new(access_token: open_ai_access_token)
@@ -5,10 +7,10 @@ class OpenAiService
 
     response = client.chat(
       parameters: {
-        model: "gpt-3.5-turbo",
-        messages: messages
+        model: 'gpt-3.5-turbo',
+        messages:
       }
     )
-    response.dig("choices", 0, "message", "content")
+    response.dig('choices', 0, 'message', 'content')
   end
 end

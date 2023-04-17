@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SlackAppMentionJob do
@@ -17,7 +19,7 @@ RSpec.describe SlackAppMentionJob do
 
       specify do
         expect { subject }.to change(ChatThread.assistant, :count).by(1)
-          .and have_enqueued_job(SlackResponseJob)
+                                                                  .and have_enqueued_job(SlackResponseJob)
       end
     end
 
@@ -26,7 +28,7 @@ RSpec.describe SlackAppMentionJob do
 
       specify do
         expect { subject }.to change(ChatThread.assistant, :count).by(1)
-          .and have_enqueued_job(SlackResponseJob)
+                                                                  .and have_enqueued_job(SlackResponseJob)
       end
     end
   end
