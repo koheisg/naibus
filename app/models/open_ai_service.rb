@@ -2,7 +2,7 @@
 
 class OpenAiService
   def self.call(messages, open_ai_access_token)
-    client = OpenAI::Client.new(access_token: open_ai_access_token)
+    client = OpenAI::Client.new(access_token: open_ai_access_token, request_timeout: 100_000)
     client.completions
 
     response = client.chat(
