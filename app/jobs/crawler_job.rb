@@ -4,14 +4,17 @@ class CrawlerJob < ApplicationJob
   def perform(ref)
     uri = URI.parse(ref.url)
 
-    # html = net_http_get(uri)
-    html = ferrum_get(uri)
+    html = begin
+             ferrum_get(uri)
+           rescue => e
+             nokogiri_parser(uri)
+           end
     doc = Nokogiri::HTML.parse(html, nil, 'utf-8')
     doc.css('script, style, noscript').each(&:remove)
     title = doc.xpath('//title').text
     body = doc.xpath('//body').text
-              .gsub(/<[^>]*>/, '')
-              .gsub(/\s/, '')
+      .gsub(/<[^>]*>/, '')
+      .gsub(/\s/, '')
     ref.update(body:, title:)
   end
 
