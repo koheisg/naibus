@@ -39,7 +39,6 @@ class SlackController < ActionController::API
       redirect_uri: ENV['SLACK_REDIRECT_URI']
     )
     if res['ok']
-      session[:user_id] = User.create!(slack_user_id: res['authed_user']['id']).id
       access_token = res['access_token']
       workspace_id = res['team']['id']
       workspace = Workspace.find_by(workspace_code: workspace_id)
@@ -49,6 +48,7 @@ class SlackController < ActionController::API
         workspace = Workspace.create!(workspace_code: workspace_id,
                                       access_token:)
       end
+      session[:user_id] = User.find_or_create_by!(slack_user_id: res['authed_user']['id']).id
       session[:workspace_id] = workspace.id
       redirect_to edit_workspace_path
     else
