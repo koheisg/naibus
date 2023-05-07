@@ -39,6 +39,7 @@ class SlackController < ActionController::API
       redirect_uri: ENV['SLACK_REDIRECT_URI']
     )
     if res['ok']
+      pp res
       access_token = res['access_token']
       workspace_id = res['team']['id']
       workspace = Workspace.find_by(workspace_code: workspace_id)
