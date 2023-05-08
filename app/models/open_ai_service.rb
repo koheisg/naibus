@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class OpenAiService
-  def self.call(messages, open_ai_access_token, model: 'gpt-3.5-turbo')
-    client = OpenAI::Client.new(access_token: open_ai_access_token, request_timeout: 100_000)
+  def self.call(messages:, access_token:, model: 'gpt-3.5-turbo')
+    client = OpenAI::Client.new(access_token:, request_timeout: 100_000)
     client.completions
 
     response = client.chat(

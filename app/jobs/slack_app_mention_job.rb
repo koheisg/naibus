@@ -21,7 +21,8 @@ class SlackAppMentionJob < ApplicationJob
 
     messages += thread_messages
 
-    assistant_message = OpenAiService.call(messages, workspace.open_ai_access_token, workspace.open_ai_model)
+    assistant_message = generate_assistant_message(workspace, messages)
+
     return unless assistant_message
 
     response_thread = ChatThread.create(message_code: thread.message_code,
@@ -32,5 +33,13 @@ class SlackAppMentionJob < ApplicationJob
                                         message: assistant_message)
 
     SlackResponseJob.perform_later(workspace, response_thread)
+  end
+
+  private
+
+  def generate_assistant_message(workspace, messages)
+    access_token = workspace.open_ai_access_token
+    model = workspace.open_ai_model
+    OpenAiService.call(messages:, access_token:, model:)
   end
 end
