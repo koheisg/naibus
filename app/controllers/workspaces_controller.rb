@@ -18,6 +18,6 @@ class WorkspacesController < ApplicationController
   private
 
   def workspace_params
-    params.require(:workspace).permit(:open_ai_access_token)
+    params.require(:workspace).permit(:open_ai_access_token, :system_message, :open_ai_model)
   end
 end
