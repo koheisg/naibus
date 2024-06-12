@@ -9,6 +9,9 @@ class CrawlerJob < ApplicationJob
            rescue => e
              nokogiri_parser(uri)
            end
+
+    return if html.nil?
+
     doc = Nokogiri::HTML.parse(html, nil, 'utf-8')
     doc.css('script, style, noscript').each(&:remove)
     title = doc.xpath('//title').text
@@ -24,6 +27,8 @@ class CrawlerJob < ApplicationJob
     response = Net::HTTP.get_response(uri)
 
     response.body if response.is_a?(Net::HTTPSuccess)
+  rescue => e
+    nil
   end
 
   def ferrum_get(uri)
