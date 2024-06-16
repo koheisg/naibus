@@ -9,10 +9,10 @@ class SlackAppMentionJob < ApplicationJob
         CrawlerJob.perform_now(ref)
       end
     end
+    system_message = workspace.system_message || default_system_message
     messages = [
       { role: :system,
-        content: format(workspace.system_message,
-                        current_time: Time.current.in_time_zone('Tokyo').strftime('%Y年%m月%d日 %H時%M分%S秒')) }
+        content: format(system_message, current_time:) }
     ]
 
     thread_messages = ChatThread.where(ts_code: thread.ts_code)
@@ -41,5 +41,16 @@ class SlackAppMentionJob < ApplicationJob
     access_token = workspace.open_ai_access_token
     model = workspace.open_ai_model
     OpenAiService.call(messages:, access_token:, model:)
+  end
+
+  def current_time
+    Time.current.in_time_zone('Tokyo').strftime('%Y年%m月%d日 %H時%M分%S秒')
+  end
+
+  def default_system_message
+    <<~TEXT
+    あなたはSlackにインストールされてるチャットボットして振る舞ってください。
+    現在時刻は#{current_time}です。
+    TEXT
   end
 end
