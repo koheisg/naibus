@@ -3,5 +3,5 @@
 class Workspace < ApplicationRecord
   validates :workspace_code, presence: true, uniqueness: true
   validates :access_token, presence: true
-  enum open_ai_model: %i[gpt-4-nano]
+  enum open_ai_model: %i[gpt-4.1-nano]
 end
