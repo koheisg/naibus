@@ -13,7 +13,7 @@ class SlackController < ApplicationController
                               team_code: params[:team_id],
                               channel_code: params.dig('event', 'channel'),
                               ts_code: params['event']['thread_ts'] || params['event']['ts'],
-                              message: params['event']['text'].gsub(/<@.*?> /, ''))
+                              message: params['event']['text'].gsub(/<@.*?>/, ''))
       SlackAppMentionJob.perform_later(workspace, thread) if thread.save
       render json: '', status: 200
     elsif params['event']['type'] == 'reaction_added' && params['event']['reaction'] == 'naibus'
