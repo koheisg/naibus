@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SlackController < ActionController::API
+class SlackController < ApplicationController
   def endpoint
     if params['event']['type'] == 'url_verification'
       render json: { challenge: params[:challenge] }, status: 200

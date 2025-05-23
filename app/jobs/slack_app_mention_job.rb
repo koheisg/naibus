@@ -2,22 +2,13 @@
 
 class SlackAppMentionJob < ApplicationJob
   def perform(workspace, thread)
-    urls = URI.extract(thread.message, %w[http https])
-    if urls.present?
-      urls.each do |url|
-        ref = thread.ref_urls.find_or_create_by(url:)
-        CrawlerJob.perform_now(ref)
-      end
-    end
     system_message = workspace.system_message || default_system_message
-    messages = [
-      { role: :system,
-        content: format(system_message, current_time:) }
-    ]
+    messages = [{ role: :system,
+                  content: format(system_message, current_time:) }]
 
     thread_messages = ChatThread.where(ts_code: thread.ts_code)
                                 .order(:created_at)
-                                .map { { role: _1.role.to_s, content: _1.message_with_ref_urls } }
+                                .map { { role: _1.role.to_s, content: _1.message } }
 
     messages += thread_messages
 
