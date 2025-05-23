@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SlackController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def endpoint
     if params['event']['type'] == 'url_verification'
       render json: { challenge: params[:challenge] }, status: 200
