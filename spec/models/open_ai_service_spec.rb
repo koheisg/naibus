@@ -9,7 +9,7 @@ RSpec.describe OpenAiService, type: :model do
 
     let(:messages) { [{ role: 'user', content: 'Hello!' }] }
     let(:access_token) { 'test_access_token' }
-    let(:model) { 'gpt-3.5-turbo' }
+    let(:model) { 'gpt-5-nano' }
     let(:mock_response) do
       {
         'choices' => [
