@@ -17,7 +17,7 @@ RSpec.describe OpenAiService, type: :model do
         ]
       }
     end
-    let(:openai_client) { instance_double(OpenAI::Client, chat: mock_response, completions: nil) }
+    let(:openai_client) { instance_double(OpenAI::Client, chat: mock_response) }
 
     before { allow(OpenAI::Client).to receive(:new).and_return(openai_client) }
 
