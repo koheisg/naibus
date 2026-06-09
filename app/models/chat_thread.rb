@@ -3,5 +3,5 @@
 class ChatThread < ApplicationRecord
   has_many :ref_urls
 
-  enum role: { user: 0, assistant: 1 }
+  enum :role, { user: 0, assistant: 1 }
 end
