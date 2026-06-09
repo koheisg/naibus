@@ -25,5 +25,25 @@ RSpec.describe OpenAiService, type: :model do
     before { allow(OpenAI::Client).to receive(:new).and_return(openai_client) }
 
     it { is_expected.to eq('Hi there!') }
+
+    context 'with a web_search-capable model' do
+      let(:model) { 'gpt-5-mini' }
+
+      it 'enables the web_search tool' do
+        subject
+        expect(responses).to have_received(:create)
+          .with(hash_including(parameters: hash_including(tools: [{ type: 'web_search' }])))
+      end
+    end
+
+    context 'with a nano model' do
+      let(:model) { 'gpt-5-nano' }
+
+      it 'omits the web_search tool' do
+        subject
+        expect(responses).to have_received(:create)
+          .with(hash_including(parameters: hash_excluding(:tools)))
+      end
+    end
   end
 end
